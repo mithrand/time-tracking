@@ -1,0 +1,43 @@
+{
+  "name": "time-tracking",
+  "version": "0.1.0",
+  "private": true,
+  "devDependencies": {
+    "react-scripts-ts": "1.1.6",
+    "concurrently": "2.2.0"
+  },
+  "dependencies": {
+    "@types/jest": "^18.1.1",
+    "@types/node": "^7.0.5",
+    "@types/react": "^15.0.12",
+    "@types/react-dom": "^0.14.23",
+    "babel-cli": "6.22.2",
+    "babel-core": "6.22.1",
+    "babel-preset-es2015": "6.22.0",
+    "body-parser": "1.14.1",
+    "express": "4.13.3",
+    "fs": "0.0.2",
+    "moment": "^2.17.1",
+    "path": "0.12.7",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "semantic-ui": "2.2.7"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
+  },
+  "scripts": {
+    "start": "react-scripts-ts start",
+    "build": "react-scripts-ts build",
+    "test": "react-scripts-ts test --env=jsdom",
+    "eject": "react-scripts-ts eject",
+    "go": "open http://localhost:3000; npm run server",
+    "e2e": "nightwatch; npm run reset-data;",
+    "reset-data": "copy data.json.pristine data.json",
+    "test-express": "npm run reset-data; ./node_modules/.bin/concurrently -k 'npm run server' 'npm run e2e'",
+    "server": "babel-node server.js",
+    "start-express": "npm run server"
+  }
+}
