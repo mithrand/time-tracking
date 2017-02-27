@@ -3,15 +3,20 @@
  */
 
 import * as React from 'react';
-import TaskForm from './TaskForm';
+import ITask from './ITask';
+import {TaskForm, ITaskFormState} from './TaskForm';
 
-export interface IToggleTaskFormButton {
+export interface IToggleTaskFormButton extends IToggleTaskFormState  {
+    onCreateTask(task: ITask): void;
+}
+
+export interface IToggleTaskFormState {
     editFormOpen: boolean;
 }
 
 export class ToggleTaskFormButton extends React.Component<IToggleTaskFormButton, {}> {
 
-    state: IToggleTaskFormButton;
+    state: IToggleTaskFormState;
 
     // change the state from visible to no visible and vice versa
     toggleForm = () => {
@@ -28,18 +33,23 @@ export class ToggleTaskFormButton extends React.Component<IToggleTaskFormButton,
         }
     }
 
+    createNew = (form: ITaskFormState) => {
+        let newTask: ITask = { id: '', title: form.title, project: form.project, elapsed: 0, runningSince: undefined};
+        this.setState(Object.assign({}, this.state, {editFormOpen: false}));
+        this.props.onCreateTask(newTask);
+    };
+
     render() {
 
             if (this.state.editFormOpen) {
                 return(
                     <TaskForm
                         key={''}
-                        id={''}
                         title={''}
                         project={''}
-                        elapsed = {0}
-                        cancel = {this.toggleForm}
-                        formSubmit = {() => {return 1; }}
+                        onCancelButtonClick = {this.toggleForm}
+                        onFormSubmit = {this.createNew}
+                        openInCreateMode = {true}
                     />
                 );
             }else {

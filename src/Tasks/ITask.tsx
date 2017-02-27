@@ -7,6 +7,7 @@ interface ITask {
     project: string;
     elapsed: number;
     id: string;
+    runningSince?: number;
 }
 
 export default ITask;

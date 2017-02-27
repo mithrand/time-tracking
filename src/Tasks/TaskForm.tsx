@@ -2,15 +2,16 @@
  * Created by Antonio on 26/02/2017.
  */
 import * as React from 'react';
-import ITask from './ITask';
 
-export interface ITaskForm extends ITask {
-    cancel(): void;
-    formSubmit(task: ITask): void;
+export interface ITaskForm extends ITaskFormState {
+    openInCreateMode: boolean;
+    onCancelButtonClick(): void;
+    onFormSubmit(formObject: ITaskFormState): void;
 }
 
-export interface ITaskFormState extends ITask {
-
+export interface ITaskFormState {
+    title: string;
+    project: string;
 }
 
 export class TaskForm extends React.Component<ITaskForm, {}> {
@@ -23,26 +24,26 @@ export class TaskForm extends React.Component<ITaskForm, {}> {
         this.state = props;
     }
 
-    cancelOnClick = () => {
-        this.props.cancel();
-    };
-
     createOrUpdateText = () => {
-        return this.props.id === '' ? 'Create' : 'Update';
+        return this.props.openInCreateMode ? 'Create' : 'Update';
     };
 
-    createUpdateClick = () => {
-        this.props.formSubmit(this.state);
+    handleCancelButtonClick = () => {
+        this.props.onCancelButtonClick();
+    };
+
+    handleSaveCreteButtonClick = () => {
+        this.props.onFormSubmit(this.state);
     };
 
     handleTitleChange = (e: any ) => {
-        let newTask: ITask = Object.assign({}, this.state, {title: e.target.value});
-        this.setState(newTask);
+        let newState: ITaskFormState = Object.assign({}, this.state, {title: e.target.value});
+        this.setState(newState);
     };
 
     handleProjectChange = (e: any ) => {
-        let newTask: ITask = Object.assign({}, this.state, {project: e.target.value});
-        this.setState(newTask);
+        let newState: ITaskFormState = Object.assign({}, this.state, {project: e.target.value});
+        this.setState(newState);
     };
 
     render() {
@@ -59,10 +60,10 @@ export class TaskForm extends React.Component<ITaskForm, {}> {
                             <input type="text"  defaultValue={this.props.project}  onChange={this.handleProjectChange}/>
                         </div>
                         <div className="ui two bottom attached buttons">
-                            <button className="ui basic blue button" onClick={this.createUpdateClick}>
+                            <button className="ui basic blue button" onClick={this.handleSaveCreteButtonClick}>
                                 {this.createOrUpdateText()}
                             </button>
-                            <button className="ui basic red button" onClick={this.cancelOnClick}>
+                            <button className="ui basic red button" onClick={this.handleCancelButtonClick}>
                                 Cancel
                             </button>
                         </div>

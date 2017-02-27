@@ -6,42 +6,76 @@ import * as React from 'react';
 import TaskList from './Tasks/TaskList';
 import ToggleTaskFormButton from './Tasks/ToggleTaskFormButton';
 import ITask from './Tasks/ITask';
+let UUID = require('uuid-js');
+
+interface ITaskDashboardState {
+    tasks: ITask[];
+}
 
 class TaskDashboard extends React.Component <{}, {}> {
 
-    state: ITask[];
+    state: ITaskDashboardState;
+
+    //#region STATICS
+
+    private static getMoqs(): ITask[] {
+        let array: ITask[] = [];
+        array.push({
+            title: 'Mow the lawn',
+            project: 'House Chores',
+            elapsed: 5456099,
+            id: '0a4a79cb-b06d-4cb1-883d-549a1e3b66d7'
+        });
+        array.push({
+            title: 'Clear paper jam',
+            project: 'Office Chores',
+            elapsed: 1273998,
+            id: 'a73c1d19-f32d-4aff-b470-cea4e792406a',
+            runningSince: 1456225941911
+        });
+        array.push({
+            title: 'Ponder origins of universe',
+            project: 'Life Chores',
+            id: '2c43306e-5b44-4ff8-8753-33c35adbd06f',
+            elapsed: 11750
+        });
+        return array;
+    }
+
+    //#endregion
 
     constructor() {
         super();
-        this.state = this.getMoqs();
+        this.state = {  tasks: TaskDashboard.getMoqs()};
     }
 
     //#region CRUD
 
     updateTask = (newTask: ITask) => {
-        // let tasks = this.state.map((task) => {
-        //     if (task.id === newTask.id) {
-        //         return newTask;
-        //     }else {
-        //         return task;
-        //     }
-        // });
-        //
-        // this.setState(tasks);
+        let tasks = this.state.tasks.map((task) => {
+            if (task.id === newTask.id) {
+                return newTask;
+            }else {
+                return task;
+            }
+        });
+
+        this.setState(Object.assign({}, this.state, {tasks: tasks}));
     };
 
     deleteTask = (id: string) => {
-        // let tasks = this.state
-        //     .filter((task) => {
-        //         return task.id !== id;
-        //     });
-        //
-        // this.setState(tasks);
+        let tasks = this.state.tasks
+            .filter((task) => {
+                return task.id !== id;
+            });
+
+        this.setState(Object.assign({}, this.state, {tasks: tasks}));
     };
 
     createTask = (newTask: ITask) => {
-        // let tasks = this.state.concat([newTask]);
-        // this.setState(tasks);
+        newTask.id = UUID.create();
+        let tasks = this.state.tasks.concat([newTask]);
+        this.setState(Object.assign({}, this.state, {tasks: tasks}));
     };
 
     //#endregion
@@ -55,11 +89,11 @@ class TaskDashboard extends React.Component <{}, {}> {
                       <TaskList
                           updateTask = {this.updateTask}
                           deleteTask = {this.deleteTask}
-                          tasks = {this.state}
+                          tasks = {this.state.tasks}
                       />
                       <ToggleTaskFormButton
-                          editFormOpen={false}
-                          createTask = {this.createTask}
+                          onCreateTask ={this.createTask}
+                          editFormOpen = {false}
                       />
                   </div>
               </div>
@@ -67,32 +101,6 @@ class TaskDashboard extends React.Component <{}, {}> {
       );
     }
 
-    //#region PRIVATE_METHODS
-
-    private getMoqs(): ITask[] {
-        return [
-            {
-                title: 'Mow the lawn',
-                project: 'House Chores',
-                elapsed: 5456099,
-                id: '0a4a79cb-b06d-4cb1-883d-549a1e3b66d7'
-            },
-            {
-                title: 'Clear paper jam',
-                project: 'Office Chores',
-                elapsed: 1273998,
-                id: 'a73c1d19-f32d-4aff-b470-cea4e792406a'
-            },
-            {
-                title: 'Ponder origins of universe',
-                project: 'Life Chores',
-                id: '2c43306e-5b44-4ff8-8753-33c35adbd06f',
-                elapsed: 11750
-            }
-        ];
-    }
-
-    //#endregion
 }
 
 export default TaskDashboard;

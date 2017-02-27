@@ -33,8 +33,9 @@ class TaskList extends React.Component<ITaskList, {}> {
                 project = {task.project}
                 id = {task.id}
                 elapsed = {task.elapsed}
-                onUpdateTask = {this.props.updateTask}
-                onDeleteTask = {this.props.deleteTask}
+                runningSince = {task.runningSince}
+                updateTask = {this.props.updateTask}
+                deleteTask = {this.props.deleteTask}
             />
         );
 

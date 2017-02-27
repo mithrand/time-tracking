@@ -4,30 +4,47 @@
 
 import * as React from 'react';
 
-interface ITaskActionButtonState {
-    pause: boolean;
+interface ITaskActionButton extends ITaskActionButtonState {
+    onStartButtonClick(): void;
+    onStopButtonClick(): void;
 }
 
-export class TaskActionButton extends React.Component<{}, {}> {
-    state: ITaskActionButtonState;
+interface ITaskActionButtonState {
+    showStop: boolean;
+}
 
-    constructor() {
-        super();
-        this.state = { pause: true };
+export class TaskActionButton extends React.Component<ITaskActionButtonState, {}> {
+    state: ITaskActionButtonState;
+    props: ITaskActionButton;
+
+    constructor(props: ITaskActionButton) {
+        super(props);
+        this.props = props;
+        this.state = props;
     }
 
-    toggleState = (): void => {this.setState({pause: !(this.state.pause)})};
+    componentWillReceiveProps(nextProps: ITaskActionButton) {
+        this.setState(nextProps);
+    }
+
+    handleStartButtonClick= (): void => {
+        this.props.onStartButtonClick();
+    };
+
+    handleStopButtonClick= (): void => {
+        this.props.onStopButtonClick();
+    };
 
     render() {
-        if (this.state.pause) {
+        if (this.state.showStop) {
             return(
-                <div className="ui bottom attached red basic button" onClick={this.toggleState}>
+                <div className="ui bottom attached red basic button" onClick={this.handleStopButtonClick}>
                     Stop
                 </div>
             );
         }else {
             return(
-                <div className="ui bottom attached green basic button" onClick={this.toggleState}>
+                <div className="ui bottom attached green basic button" onClick={this.handleStartButtonClick}>
                     Start
                 </div>
             );
