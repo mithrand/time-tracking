@@ -3,7 +3,7 @@
  */
 
 import * as React from 'react';
-import ITask from './ITask';
+import ITask from '../Model/ITask';
 import {TaskForm, ITaskFormState} from './TaskForm';
 
 export interface IToggleTaskFormButton extends IToggleTaskFormState  {

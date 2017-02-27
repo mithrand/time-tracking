@@ -4,7 +4,7 @@
 
 import * as React from 'react';
 import Task from './Task';
-import ITask from './ITask';
+import ITask from '../Model/ITask';
 
 interface ITaskList {
     tasks: ITask[];

@@ -83,6 +83,8 @@ app.put('/api/timers', (req, res) => {
       if (timer.id === req.body.id) {
         timer.title = req.body.title;
         timer.project = req.body.project;
+        timer.elapsed = req.body.elapsed;
+        timer.runningSince = req.body.runningSince;
       }
     });
     fs.writeFile(DATA_FILE, JSON.stringify(timers, null, 4), () => {
@@ -94,6 +96,7 @@ app.put('/api/timers', (req, res) => {
 app.delete('/api/timers', (req, res) => {
   fs.readFile(DATA_FILE, (err, data) => {
     let timers = JSON.parse(data);
+
     timers = timers.reduce((memo, timer) => {
       if (timer.id === req.body.id) {
         return memo;
@@ -101,9 +104,11 @@ app.delete('/api/timers', (req, res) => {
         return memo.concat(timer);
       }
     }, []);
+
     fs.writeFile(DATA_FILE, JSON.stringify(timers, null, 4), () => {
       res.json({});
     });
+
   });
 });
 

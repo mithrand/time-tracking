@@ -3,7 +3,7 @@
  */
 
 import * as React from 'react';
-import ITask from './ITask';
+import ITask from '../Model/ITask';
 import TaskView from './TaskView';
 import {TaskForm, ITaskFormState} from './TaskForm';
 

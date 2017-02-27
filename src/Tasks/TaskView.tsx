@@ -5,7 +5,7 @@
 import * as React from 'react';
 import TaskActionButton from './TaskActionButton';
 import * as moment from 'moment';
-import ITask from './ITask';
+import ITask from '../Model/ITask';
 import Timer = NodeJS.Timer;
 
 interface ITaskView extends ITask {
