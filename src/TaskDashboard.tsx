@@ -11,37 +11,37 @@ class TaskDashboard extends React.Component <{}, {}> {
 
     state: ITask[];
 
-    constructor(props: any) {
-        super(props);
+    constructor() {
+        super();
         this.state = this.getMoqs();
     }
 
     //#region CRUD
 
-    UpdateTask = (newTask: ITask) => {
-        let tasks = this.state.map((task) => {
-            if (task.id === newTask.id) {
-                return newTask;
-            }else {
-                return task;
-            }
-        });
-
-        this.setState(tasks);
+    updateTask = (newTask: ITask) => {
+        // let tasks = this.state.map((task) => {
+        //     if (task.id === newTask.id) {
+        //         return newTask;
+        //     }else {
+        //         return task;
+        //     }
+        // });
+        //
+        // this.setState(tasks);
     };
 
-    DeleteTask = (id: string) => {
-        let tasks = this.state
-            .filter((task) => {
-                return task.id !== id;
-            });
-
-        this.setState(tasks);
+    deleteTask = (id: string) => {
+        // let tasks = this.state
+        //     .filter((task) => {
+        //         return task.id !== id;
+        //     });
+        //
+        // this.setState(tasks);
     };
 
-    CreateTask = (newTask: ITask) => {
-        let tasks = this.state.concat([newTask]);
-        this.setState(tasks);
+    createTask = (newTask: ITask) => {
+        // let tasks = this.state.concat([newTask]);
+        // this.setState(tasks);
     };
 
     //#endregion
@@ -53,11 +53,14 @@ class TaskDashboard extends React.Component <{}, {}> {
               <div className="ui three column centered grid">
                   <div className="column">
                       <TaskList
-                          onUpdateTask = {this.UpdateTask}
-                          onDeleteTask = {this.DeleteTask}
+                          updateTask = {this.updateTask}
+                          deleteTask = {this.deleteTask}
                           tasks = {this.state}
                       />
-                      <ToggleTaskFormButton editFormOpen={false}/>
+                      <ToggleTaskFormButton
+                          editFormOpen={false}
+                          createTask = {this.createTask}
+                      />
                   </div>
               </div>
           </div>
