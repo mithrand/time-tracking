@@ -3,48 +3,81 @@
  */
 
 import ITask from '../Model/ITask';
-
-interface ICallBack {
-    ( result?: ITask[] ) : ITask[];
-}
+import 'whatwg-fetch';
 
 export interface ITaskAPI {
-    getTasks( onSucces: ICallBack ): Promise <any>;
+    getTasks(): Promise <ITask[]>;
+    deleteTask(data: string): Promise<Response>;
+    updateTask(data: ITask): Promise<ITask[]>;
+    createTask(data: ITask): Promise <ITask[]>;
 }
 
 export class TaskAPI implements ITaskAPI {
 
-    public URL_GETTASK = '/api/timers';
+    public URL_API: string;
 
     constructor() {
-        this.URL_GETTASK = '/api/timers';
+        this.URL_API = '/api/timers';
     };
 
-    public getTasks = (onSucces: ICallBack): Promise <any> => {
-        return  fetch(this.URL_GETTASK, {headers: {Accept: 'application/json'}})
+    public getTasks = (): Promise<ITask[]> => {
+        return  fetch(this.URL_API, {headers: {Accept: 'application/json'}})
                 .then(this.checkStatus)
-                .then(this.parseJSON)
-                .then(onSucces);
+                .then(this.parseJSON);
+
     };
 
-    public  checkStatus = (response: any): any  => {
-        if (response && response.status >= 200 && response.status < 300) {
-            return response;
+    public deleteTask = (data: string ): Promise<Response> => {
+        return  fetch(this.URL_API, {
+            method: 'delete',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+                .then(this.checkStatus)
+                .then(this.parseJSON);
+    };
+
+    public updateTask = (data: ITask ): Promise<ITask[]> => {
+        return  fetch(this.URL_API, {
+            method: 'post',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+                .then(this.checkStatus)
+                .then(this.parseJSON);
+    };
+
+    public createTask = (data: ITask ): Promise<ITask[]> => {
+        return  fetch(this.URL_API, {
+            method: 'post',
+            body: JSON.stringify(data),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        })
+            .then(this.checkStatus)
+            .then(this.parseJSON);
+    };
+
+    public checkStatus = (res: Response): Response => {
+        const error = new Error(`HTTP Error ${res.status} ${res.statusText}`);
+        if (res && res.status >= 200 && res.status < 300) {
+            return res;
         }else {
-            const error = new Error(`HTTP Error ${response.request_seq} ${response.message}`);
             console.log(error);
             throw error;
         }
     };
 
-    public parseJSON = (response: any): ITask[] => {
-        let tasks: ITask[] = [];
-
-        if (response && response.body ) {
-            tasks = JSON.parse(response.body);
-        }
-
-        return tasks;
+    public parseJSON = (res: Response): any => {
+        return res.json();
     };
 }
 
