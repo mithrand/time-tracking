@@ -28,9 +28,10 @@ export class TaskAPI implements ITaskAPI {
     };
 
     public deleteTask = (data: string ): Promise<Response> => {
+        let req = { id: data };
         return  fetch(this.URL_API, {
             method: 'delete',
-            body: JSON.stringify(data),
+            body: JSON.stringify(req),
             headers: {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
@@ -42,7 +43,7 @@ export class TaskAPI implements ITaskAPI {
 
     public updateTask = (data: ITask ): Promise<ITask[]> => {
         return  fetch(this.URL_API, {
-            method: 'post',
+            method: 'put',
             body: JSON.stringify(data),
             headers: {
                 'Accept': 'application/json',

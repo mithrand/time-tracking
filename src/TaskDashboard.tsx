@@ -43,8 +43,11 @@ class TaskDashboard extends React.Component <{}, {}> {
                 return task;
             }
         });
-        this.server.updateTask(newTask).then((res: any) => { console.log('update task'); });
-        this.setState(Object.assign({}, this.state, {tasks: tasks}));
+        this.server.updateTask(newTask).then((res: any) => {
+            console.log('update task');
+            this.setState(Object.assign({}, this.state, {tasks: tasks}));
+        });
+
     };
 
     deleteTask = (id: string) => {
@@ -52,15 +55,21 @@ class TaskDashboard extends React.Component <{}, {}> {
             .filter((task) => {
                 return task.id !== id;
             });
-        this.server.deleteTask(id).then((res: any) => { console.log('delete task'); });
-        this.setState(Object.assign({}, this.state, {tasks: tasks}));
+        this.server.deleteTask(id).then((res: any) => {
+            console.log('delete task');
+            this.setState(Object.assign({}, this.state, {tasks: tasks}));
+        });
+
     };
 
     createTask = (newTask: ITask) => {
-        let tasks = this.state.tasks.concat([newTask]);
-        newTask.id = UUID.create();
-        this.setState(Object.assign({}, this.state, {tasks: tasks}));
-        this.server.createTask(newTask).then((res: any) => { console.log('create task'); });
+        let tasks: ITask[];
+        newTask.id = UUID.create().hex;
+        tasks = this.state.tasks.concat([newTask]);
+        this.server.createTask(newTask).then((res: any) => {
+            console.log('create task');
+            this.setState(Object.assign({}, this.state, {tasks: tasks}));
+        });
     };
 
     //#endregion
